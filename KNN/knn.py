@@ -6,15 +6,25 @@ from sklearn.metrics import (accuracy_score, f1_score,
                              recall_score, precision_score)
 from statistics import mean
 
-listaVariada_df = pd.read_csv("listaVariada.csv")
 
+alternative = pd.read_csv("alternative.csv")
+hiphop = pd.read_csv("hiphop.csv")
+blues = pd.read_csv("blues.csv")
+
+
+alternative['class'] = 0
+hiphop['class'] = 1
+blues['class'] = 2
+
+listaVariada = pd.concat([alternative, hiphop, blues], axis=0, join='inner')
 normalizar = preprocessing.MinMaxScaler()
 
-caracteristica = listaVariada_df[['danceability', 'energy', 'loudness',
-                                  'speechiness', 'acousticness',
-                                  'instrumentalness', 'liveness', 'valence',
-                                  'tempo']]
-classes = listaVariada_df['Classe']
+caracteristica = listaVariada[['danceability', 'energy', 'loudness',
+                               'speechiness', 'acousticness',
+                               'instrumentalness', 'liveness', 'valence',
+                               'tempo']]
+
+classes = listaVariada['class']
 
 caracteristica = normalizar.fit_transform(caracteristica)
 
@@ -37,3 +47,4 @@ for i in range(20):
     recallList.append(recall_score(yTest, yPred, average='macro'))
 
     print(mean(accList), mean(precList), mean(f1List), mean(recallList))
+    
