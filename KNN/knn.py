@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
@@ -20,13 +21,46 @@ listaVariada = pd.concat([alternative, hiphop, blues], axis=0, join='inner')
 normalizar = preprocessing.MinMaxScaler()
 
 caracteristica = listaVariada[['danceability', 'energy', 'loudness',
-                               'speechiness', 'acousticness',
-                               'instrumentalness', 'liveness', 'valence',
                                'tempo']]
 
 classes = listaVariada['class']
 
 caracteristica = normalizar.fit_transform(caracteristica)
+
+fig, axs = plt.subplots(2, 3, figsize=(13, 13))
+axs[0, 0].scatter(listaVariada["danceability"],
+                  listaVariada["energy"], c=listaVariada["class"], alpha=0.5)
+axs[0, 0].set_xlabel("danceability")
+axs[0, 0].set_ylabel("energy")
+
+axs[0, 1].scatter(listaVariada["danceability"],
+                  listaVariada["loudness"], c=listaVariada["class"], alpha=0.5)
+axs[0, 1].set_xlabel("danceability")
+axs[0, 1].set_ylabel("loudness")
+
+axs[0, 2].scatter(listaVariada["danceability"],
+                  listaVariada["tempo"], c=listaVariada["class"], alpha=0.5)
+axs[0, 2].set_xlabel("danceability")
+axs[0, 2].set_ylabel("tempo")
+
+axs[1, 0].scatter(listaVariada["energy"],
+                  listaVariada["loudness"], c=listaVariada["class"], alpha=0.5)
+axs[1, 0].set_xlabel("energy")
+axs[1, 0].set_ylabel("loudness")
+
+axs[1, 1].scatter(listaVariada["energy"], listaVariada["tempo"],
+                  c=listaVariada["class"], alpha=0.5)
+axs[1, 1].set_xlabel("energy")
+axs[1, 1].set_ylabel("tempo")
+
+axs[1, 2].scatter(listaVariada["loudness"],
+                  listaVariada["tempo"], c=listaVariada["class"], alpha=0.5)
+axs[1, 2].set_xlabel("loudness")
+axs[1, 2].set_ylabel("tempo")
+
+
+plt.show()
+
 
 accList = []
 precList = []
@@ -47,4 +81,3 @@ for i in range(20):
     recallList.append(recall_score(yTest, yPred, average='macro'))
 
     print(mean(accList), mean(precList), mean(f1List), mean(recallList))
-    
