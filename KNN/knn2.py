@@ -31,23 +31,21 @@ classes = listaVariada['class']
 
 caracteristica = normalizar.fit_transform(caracteristica)
 
+X, y = make_classification(random_state=0)
 
-for i in range(20):
-    X, y = make_classification(random_state=0)
+xTrain, xTest, yTrain, yTest = train_test_split(
+    caracteristica, classes)
+knn = KNeighborsClassifier(n_neighbors=7, metric="euclidean")
 
-    xTrain, xTest, yTrain, yTest = train_test_split(
-        caracteristica, classes)
-    knn = KNeighborsClassifier(n_neighbors=7, metric="euclidean")
+clf = SVC(random_state=0)
+clf.fit(xTrain, yTrain)
 
-    clf = SVC(random_state=0)
-    clf.fit(xTrain, yTrain)
+SVC(random_state=0)
 
-    SVC(random_state=0)
+predictions = clf.predict(xTest)
 
-    predictions = clf.predict(xTest)
-
-    cf_matrix = confusion_matrix(yTest, predictions, labels=clf.classes_)
-    disp = ConfusionMatrixDisplay(
-        confusion_matrix=cf_matrix, display_labels=clf.classes_)
-    disp.plot()
-    plt.show()
+cf_matrix = confusion_matrix(yTest, predictions, labels=clf.classes_)
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=cf_matrix, display_labels=clf.classes_)
+disp.plot()
+plt.show()
